@@ -1,0 +1,79 @@
+@include('index.header')
+<body>
+@include('dashboard.navbar')
+<div class="container" id="mfcont">
+    <div class="row">
+
+        <div class="col-xs-3" id="prof">
+            <div class="panel panel-default" id="profile">
+                {{ HTML::image('img/naga.jpg', 'stinaga', array('class' => 'img-responsive', 'id' => 'coverlogo'))  }}
+                <div id="pnelprofilepic">
+                    <img src="{{ $profile->profile_mage }}" id="profile-pic">
+                </div>
+                <div class="panel-body caption" id="pnelcaption">
+                    <h4 style="font-weight: bold" class="text-primary">{{ ucfirst($profile->firstname) }} {{ ucfirst($profile->surname) }}</h4>
+                </div>
+                </div>
+
+            <div class="list-group">
+                <a class="list-group-item active">
+                    Apply Leave
+                </a>
+                <a href="{{ URL::route('dash') }}" class="list-group-item tip-bottom"  data-toggle="tooltip"  data-original-title="Go to Home Panel" ><i class="fa fa-home"></i> Home</a>
+                <a href="leavepay" class="list-group-item tip-bottom"  data-toggle="tooltip"  data-original-title="{{ $countleave->remaining_leave }} remaining leave." ><span class="badge">{{ $countleave->remaining_leave }}</span> Leave with Pay</a>
+                <a href="leavewopay" class="list-group-item tip-bottom"  data-toggle="tooltip"  data-original-title="{{ $countleave->remaining_leave_wopay }} remaining leave." ><span class="badge">{{ $countleave->remaining_leave_wopay }}</span> Leave without Pay</a>
+                <a href="{{ URL::route('notification') }}" class="list-group-item actives"> Notification Box</a>
+            </div>
+        </div>
+
+        <div class="col-xs-6" id="stat">
+
+                </div>
+
+        <div class="col-xs-3">
+            <div class="list-group">
+                <a class="list-group-item active">
+                    Recent Leave (With Pay)
+                </a>
+                @if(count($rleave) === 0)
+                    <a class="list-group-item" id="recentleave">
+                        No leave yet.
+                    </a>
+                @else
+                    @foreach($rleave as $recentleave)
+                        <a  href="leavelog/{{ $recentleave->leave_id }}" class="list-group-item" id="recentleave">
+                            <div>
+                                <h6><strong>{{ $recentleave->date_from }} to {{ $recentleave->date_to }}</strong></h6>
+
+                               <p id="pef"> {{ nl2br(substr($recentleave->reason,0, 100)) }}...</p>
+                            </div>
+                        </a>
+                    @endforeach
+                @endif
+            </div>
+
+            <div class="list-group">
+                <a class="list-group-item active">
+                    Recent Leave (Without Pay)
+                </a>
+                @if(count($sleave) === 0)
+                    <a class="list-group-item" id="recentleave">
+                        No leave yet.
+                    </a>
+                @else
+                    @foreach($sleave as $recentleave)
+
+                        <a  href="leavelogw/{{ $recentleave->leave_id }}" class="list-group-item" id="recentleave">
+                            <div>
+                                <h6><strong>{{ $recentleave->date_from }} to {{ $recentleave->date_to }}</strong></h6>
+                                <p id="pef">{{ nl2br(substr($recentleave->reason,0, 100)) }}...</p>
+                            </div>
+                        </a>
+                    @endforeach
+                @endif
+            </div>
+
+        </div>
+            </div>
+        </div>
+@include('index.footer')
